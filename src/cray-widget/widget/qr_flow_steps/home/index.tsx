@@ -92,8 +92,9 @@ const QRFlowHome = () => {
     if (!order || tokens.isLoading || !chainId) return null;
     const tokenAddress = tokens.data[chainId].tokenAddress;
     const amount = order.qrId;
-    const verifierContractAddresses = order.verifierContractAddresses[chainId];
-    return `ethereum:${tokenAddress}@${chainId}/approve?uint256=${amount}&address=${verifierContractAddresses}`;
+    const QRGatewayContractAddresses =
+      order.QRGatewayContractAddresses[chainId];
+    return `ethereum:${tokenAddress}@${chainId}/transfer?uint256=${amount}&address=${QRGatewayContractAddresses}`;
   }, [order, tokens, chainId]);
 
   if (status === OrderStatus.COMPLETED) {
@@ -126,11 +127,11 @@ const QRFlowHome = () => {
           <Loading size="64" />
         </div>
       )}
-      <div className="flex text-bold justify-center items-center gap-4 text-center font-bold mt-4 ">
+      <div className="flex text-bold justify-center items-center gap-4 text-center font-bold mt-4 flex-wrap">
         {chains.map((chain) => (
           <button
             onClick={() => setChainId(chain.id)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-full ${
+            className={`flex items-center gap-2 px-4 py-2 rounded-full shrink-0 ${
               chainId === chain.id
                 ? "ring-2 ring-[#f96900] bg-[#f96900]/10 "
                 : ""
